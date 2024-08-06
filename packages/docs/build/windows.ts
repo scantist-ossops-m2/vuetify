@@ -1,7 +1,12 @@
 import { createFilter } from 'vite'
 import type { Plugin } from 'vite'
+import process from 'node:process'
 
-export function Windows (include = [/\.vue$/, /\.vue\?vue/, /\.md$/, /\.md\?vue/]) {
+export function Windows (include: RegExp[]) {
+  if (process.platform !== 'win32') {
+    return undefined
+  }
+
   const filter = createFilter(include)
   return {
     name: 'vuetify:windows',

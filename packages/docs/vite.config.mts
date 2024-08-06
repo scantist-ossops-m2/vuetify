@@ -24,6 +24,8 @@ import { genAppMetaInfo } from './src/utils/metadata'
 import { MdiJs } from './build/mdi-js'
 import { Windows } from './build/windows'
 
+const componentsInclude = [/\.vue$/, /\.vue\?vue/, /\.md$/, /\.md\?vue/]
+
 const resolve = (file: string) => fileURLToPath(new URL(file, import.meta.url))
 
 const ssrTransformCustomDirective = () => {
@@ -134,7 +136,7 @@ export default defineConfig(({ command, mode, isSsrBuild }) => {
       // https://github.com/antfu/unplugin-vue-components
       Components({
         directoryAsNamespace: true,
-        include: [/\.vue$/, /\.vue\?vue/, /\.md$/, /\.md\?vue/],
+        include: componentsInclude,
         exclude: [],
         excludeNames: ['AppMarkdown'],
       }),
@@ -277,7 +279,7 @@ export default defineConfig(({ command, mode, isSsrBuild }) => {
         styles: command === 'serve' || mode === 'development' ? 'sass' : true,
       }),
 
-      Windows(),
+      Windows(componentsInclude),
 
       // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
       VueI18n({
@@ -352,7 +354,7 @@ export default defineConfig(({ command, mode, isSsrBuild }) => {
       Inspect(),
 
       process.env.HTTPS === 'true' ? basicSsl() : undefined,
-    ],
+    ].filter(Boolean),
 
     optimizeDeps: {
       include: [
