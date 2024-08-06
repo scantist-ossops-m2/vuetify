@@ -22,6 +22,7 @@ import Api from './build/api-plugin'
 import { Examples } from './build/examples-plugin'
 import { genAppMetaInfo } from './src/utils/metadata'
 import { MdiJs } from './build/mdi-js'
+import { Windows } from './build/windows'
 
 const resolve = (file: string) => fileURLToPath(new URL(file, import.meta.url))
 
@@ -275,6 +276,8 @@ export default defineConfig(({ command, mode, isSsrBuild }) => {
         autoImport: { labs: true },
         styles: command === 'serve' || mode === 'development' ? 'sass' : true,
       }),
+
+      Windows(),
 
       // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
       VueI18n({
